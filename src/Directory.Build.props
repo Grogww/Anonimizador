@@ -13,10 +13,12 @@
     <Authors>Eduardo Fritsch Silva</Authors>
     <Copyright>Copyright 2026 Eduardo Fritsch Silva</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Grogww/AnonimizadorDotNet</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Grogww/AnonimizadorDotNet</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Grogww/Anonimizador</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Grogww/Anonimizador</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Anonimizador de dados pessoais brasileiros para .NET: substitui CPF, CNPJ, telefone, e-mail e nome em resultados de banco de dados por valores fictícios válidos e determinísticos, offline. CPF, CNPJ e telefone usam FPE FF1 (NIST SP 800-38G) sem colisões, preservando as junções entre tabelas.</Description>
+    <PackageTags>anonimizador;anonimizacao;dotnet;pseudonimizacao;lgpd;cpf;cnpj;fpe;ff1;privacidade;mcp;adonet</PackageTags>
 
     <!-- SourceLink (embutido no SDK): permite depurar o código-fonte a partir do pacote. -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
