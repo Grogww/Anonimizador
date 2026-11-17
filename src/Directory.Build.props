@@ -17,6 +17,8 @@
     <RepositoryUrl>https://github.com/Grogww/AnonimizadorDotNet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Substitui dados pessoais brasileiros (CPF, CNPJ, telefone, e-mail, nome) em resultados de banco de dados por valores fictícios válidos e determinísticos, offline. CPF, CNPJ e telefone usam FPE FF1 (NIST SP 800-38G) sem colisões, preservando as junções entre tabelas.</Description>
+    <PackageTags>anonimizacao;pseudonimizacao;lgpd;cpf;cnpj;fpe;ff1;privacidade;mcp;adonet</PackageTags>
 
     <!-- SourceLink (embutido no SDK): permite depurar o código-fonte a partir do pacote. -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
