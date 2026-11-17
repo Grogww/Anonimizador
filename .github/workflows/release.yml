@@ -1,0 +1,134 @@
+name: Release
+
+# Publica no NuGet ao enviar uma tag de versão (v0.1.0-alpha.1, v0.2.0...).
+# Autenticação por Trusted Publishing: sem chave de API guardada no repositório; o nuget.org confia
+# neste arquivo (release.yml), neste repositório e no environment "nuget".
+# O disparo manual só gera o pacote e o deixa como artefato, sem publicar: serve de ensaio.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  pack:
+    name: Build, testes e pacote
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Instalar .NET 8 e 10
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # Na tag, a versão é a da tag sem o "v", e ela precisa começar pelo VersionPrefix do
+      # src/Directory.Build.props: assim uma tag errada não publica uma versão que não existe no código.
+      # No disparo manual, a versão é de ensaio (0.1.0-ci.N) e nunca é publicada.
+      - name: Definir a versão
+        id: version
+        run: |
+          prefix=$(dotnet msbuild src/Anonimizador/Anonimizador.csproj -getProperty:VersionPrefix)
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            version="${GITHUB_REF_NAME#v}"
+            case "$version" in
+              "$prefix"|"$prefix"-*) ;;
+              *) echo "::error::A tag $GITHUB_REF_NAME não corresponde ao VersionPrefix $prefix."; exit 1 ;;
+            esac
+          else
+            version="$prefix-ci.$GITHUB_RUN_NUMBER"
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Versão: $version"
+
+      - name: Restore
+        run: dotnet restore Anonimizador.slnx
+
+      - name: Build
+        run: dotnet build Anonimizador.slnx --configuration Release --no-restore
+
+      - name: Testes (net8.0 e net10.0)
+        run: dotnet test --solution Anonimizador.slnx --configuration Release --no-build
+
+      # ContinuousIntegrationBuild deixa o build determinístico e tira os caminhos da máquina do pdb.
+      - name: Pacote
+        run: >
+          dotnet pack src/Anonimizador/Anonimizador.csproj
+          --configuration Release
+          --output pacotes
+          -p:Version=${{ steps.version.outputs.version }}
+          -p:ContinuousIntegrationBuild=true
+
+      - name: Guardar o pacote
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: pacotes
+          path: pacotes/
+          if-no-files-found: error
+
+  publish:
+    name: Publicar no NuGet e no GitHub
+    needs: pack
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # O environment pode exigir a aprovação do dono antes deste job rodar.
+    environment: nuget
+    permissions:
+      contents: write   # criar o release
+      id-token: write   # token OIDC trocado pela chave temporária do NuGet
+
+    steps:
+      - name: Baixar o pacote
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: pacotes
+          path: pacotes
+
+      # Troca o token OIDC do GitHub por uma chave do NuGet válida por 1 hora.
+      - name: Login no NuGet
+        id: login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: Grogww
+
+      # O .snupkg ao lado do .nupkg sobe junto. --skip-duplicate permite rodar de novo o job
+      # se o release do GitHub falhar depois do envio ao NuGet.
+      - name: Enviar ao NuGet
+        run: >
+          dotnet nuget push "pacotes/*.nupkg"
+          --api-key "${{ steps.login.outputs.NUGET_API_KEY }}"
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
+
+      # Versão com sufixo (-alpha.1) vira pre-release e não ocupa o "Latest".
+      - name: Release no GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.pack.outputs.version }}
+        run: |
+          prerelease=""
+          case "$VERSION" in *-*) prerelease="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" pacotes/*.nupkg \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$VERSION" \
+            --generate-notes \
+            --verify-tag \
+            $prerelease
