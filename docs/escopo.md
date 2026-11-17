@@ -1,4 +1,4 @@
-# AnonimizadorDotNet — Escopo
+# Anonimizador — Escopo
 
 ## Propósito
 
@@ -268,7 +268,9 @@ Detectores e transformadores são **extensíveis**: o consumidor registra tipos 
 
 ## Decisões em aberto
 
-- **Nome do pacote NuGet:** preferência por manter `AnonimizadorDotNet`; verificar disponibilidade.
+- **Nome do pacote NuGet:** decidido: `Anonimizador` (livre no nuget.org), o mesmo do repositório e do
+  namespace. O nome anterior, `AnonimizadorDotNet`, só continua nos rótulos de derivação de chave, que não
+  mudam para não alterar os substitutos.
 - **Valor inválido numa coluna classificada** (CPF com DV errado, texto que não é do tipo): provisoriamente
   passa como está, porque `NULL` quebraria e fragmentaria os dados. Risco: um CPF real digitado com erro
   continua sendo dado pessoal e, no caso MCP, chegaria ao LLM. A decisão definitiva fica para o uso real.

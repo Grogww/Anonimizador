@@ -1,0 +1,47 @@
+#nullable enable
+Anonimizador.Anonymizer
+Anonimizador.Anonymizer.AnonymizeText(string! text) -> string!
+Anonimizador.Anonymizer.Dispose() -> void
+Anonimizador.Anonymizer.TryAnonymize(System.ReadOnlySpan<char> value, string! type, Anonimizador.ValueKind kind, out string? substitute) -> bool
+Anonimizador.Anonymizer.TryAnonymize(System.ReadOnlySpan<char> value, string! type, out string? substitute) -> bool
+Anonimizador.Anonymizer.Wrap(System.Data.Common.DbDataReader! reader) -> System.Data.Common.DbDataReader!
+Anonimizador.AnonymizerBuilder
+Anonimizador.AnonymizerBuilder.AddDetector(Anonimizador.Detection.ITextDetector! detector) -> Anonimizador.AnonymizerBuilder!
+Anonimizador.AnonymizerBuilder.AddTransformer(Anonimizador.Transformation.IValueTransformer! transformer) -> Anonimizador.AnonymizerBuilder!
+Anonimizador.AnonymizerBuilder.AnonymizerBuilder() -> void
+Anonimizador.AnonymizerBuilder.Build() -> Anonimizador.Anonymizer!
+Anonimizador.AnonymizerBuilder.IgnoreColumn(string! column) -> Anonimizador.AnonymizerBuilder!
+Anonimizador.AnonymizerBuilder.ScanColumn(string! column) -> Anonimizador.AnonymizerBuilder!
+Anonimizador.AnonymizerBuilder.TransformColumn(string! column, string! type) -> Anonimizador.AnonymizerBuilder!
+Anonimizador.AnonymizerBuilder.UseKey(System.ReadOnlySpan<byte> key) -> Anonimizador.AnonymizerBuilder!
+Anonimizador.AnonymizerBuilder.UseKeyFromEnvironment(string! variableName) -> Anonimizador.AnonymizerBuilder!
+Anonimizador.AnonymizerBuilder.WithUnclassifiedPolicy(Anonimizador.UnclassifiedPolicy policy) -> Anonimizador.AnonymizerBuilder!
+Anonimizador.Detection.ITextDetector
+Anonimizador.Detection.ITextDetector.Detect(string! text) -> System.Collections.Generic.IEnumerable<Anonimizador.Detection.TextMatch>!
+Anonimizador.Detection.ITextDetector.Type.get -> string!
+Anonimizador.Detection.TextMatch
+Anonimizador.Detection.TextMatch.Equals(Anonimizador.Detection.TextMatch other) -> bool
+Anonimizador.Detection.TextMatch.Index.get -> int
+Anonimizador.Detection.TextMatch.Length.get -> int
+Anonimizador.Detection.TextMatch.TextMatch() -> void
+Anonimizador.Detection.TextMatch.TextMatch(int index, int length) -> void
+Anonimizador.PersonalDataTypes
+Anonimizador.Transformation.IValueTransformer
+Anonimizador.Transformation.IValueTransformer.TryTransform(System.ReadOnlySpan<char> value, Anonimizador.ValueKind kind, out string? substitute) -> bool
+Anonimizador.Transformation.IValueTransformer.Type.get -> string!
+Anonimizador.UnclassifiedPolicy
+Anonimizador.UnclassifiedPolicy.Block = 1 -> Anonimizador.UnclassifiedPolicy
+Anonimizador.UnclassifiedPolicy.Pass = 0 -> Anonimizador.UnclassifiedPolicy
+Anonimizador.ValueKind
+Anonimizador.ValueKind.Number = 1 -> Anonimizador.ValueKind
+Anonimizador.ValueKind.Text = 0 -> Anonimizador.ValueKind
+const Anonimizador.PersonalDataTypes.Cnpj = "cnpj" -> string!
+const Anonimizador.PersonalDataTypes.Cpf = "cpf" -> string!
+const Anonimizador.PersonalDataTypes.Email = "email" -> string!
+const Anonimizador.PersonalDataTypes.Name = "name" -> string!
+const Anonimizador.PersonalDataTypes.Phone = "phone" -> string!
+override Anonimizador.Detection.TextMatch.GetHashCode() -> int
+static Anonimizador.Detection.TextMatch.operator !=(Anonimizador.Detection.TextMatch left, Anonimizador.Detection.TextMatch right) -> bool
+static Anonimizador.Detection.TextMatch.operator ==(Anonimizador.Detection.TextMatch left, Anonimizador.Detection.TextMatch right) -> bool
+~override Anonimizador.Detection.TextMatch.Equals(object obj) -> bool
+~override Anonimizador.Detection.TextMatch.ToString() -> string

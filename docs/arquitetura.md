@@ -1,11 +1,11 @@
-# AnonimizadorDotNet — Arquitetura
+# Anonimizador — Arquitetura
 
 Decisões de estrutura da solução e da biblioteca. O *quê* e o *porquê* do produto estão em
 [escopo.md](escopo.md); aqui fica o *como* está organizado.
 
 ## Pacotes
 
-**Um único pacote NuGet na v1: `AnonimizadorDotNet`.**
+**Um único pacote NuGet na v1: `Anonimizador`.**
 
 - `System.Text.Json` faz parte da plataforma no .NET 8, então o suporte a JSON fica no núcleo sem
   acrescentar dependência.
@@ -14,9 +14,9 @@ Decisões de estrutura da solução e da biblioteca. O *quê* e o *porquê* do p
 
 | Pacote futuro | Motivo da separação |
 |---|---|
-| `AnonimizadorDotNet.Mcp` | Depende do SDK do MCP |
-| `AnonimizadorDotNet.Ner` (v2) | Depende de runtime ONNX |
-| `AnonimizadorDotNet.EntityFrameworkCore` | Depende do EF Core |
+| `Anonimizador.Mcp` | Depende do SDK do MCP |
+| `Anonimizador.Ner` (v2) | Depende de runtime ONNX |
+| `Anonimizador.EntityFrameworkCore` | Depende do EF Core |
 
 - Pacote separado de abstrações (`.Abstractions`) não está previsto: só faria sentido se terceiros
   precisassem estender a lib sem depender do núcleo.
@@ -30,19 +30,19 @@ Decisões de estrutura da solução e da biblioteca. O *quê* e o *porquê* do p
 ## Projetos da solução
 
 ```
-AnonimizadorDotNet/
+Anonimizador/
 ├─ src/
-│  └─ AnonimizadorDotNet/              ← a lib (único projeto publicado)
+│  └─ Anonimizador/                    ← a lib (único projeto publicado)
 ├─ tests/
-│  └─ AnonimizadorDotNet.Tests/        ← unitários, vetores NIST, propriedades
+│  └─ Anonimizador.Tests/              ← unitários, vetores NIST, propriedades
 ├─ benchmarks/
-│  └─ AnonimizadorDotNet.Benchmarks/   ← BenchmarkDotNet (console, não publicado)
+│  └─ Anonimizador.Benchmarks/         ← BenchmarkDotNet (console, não publicado)
 ├─ docs/
 ├─ Directory.Build.props               ← configurações comuns a todos os projetos
 ├─ Directory.Packages.props            ← versões centralizadas de pacotes
 ├─ .editorconfig
-├─ global.json                         ← escolhe a plataforma de testes
-└─ AnonimizadorDotNet.slnx
+├─ global.json                         ← fixa o SDK 10 e escolhe a plataforma de testes
+└─ Anonimizador.slnx
 ```
 
 **Pastas físicas, sem pastas virtuais.** No disco, os projetos ficam em `src/`, `tests/` e `benchmarks/`,
@@ -52,9 +52,9 @@ só acrescentariam um nível vazio na árvore do Visual Studio.
 
 | Projeto | Papel | Publicado |
 |---|---|---|
-| `src/AnonimizadorDotNet` | A biblioteca | Sim |
-| `tests/AnonimizadorDotNet.Tests` | Testes de unidade, vetores oficiais do FF1 e testes de propriedade; acessa partes internas via `InternalsVisibleTo`; roda em `net8.0` e `net10.0` | Não |
-| `benchmarks/AnonimizadorDotNet.Benchmarks` | Medir o custo de FF1 e da varredura de JSON | Não |
+| `src/Anonimizador` | A biblioteca | Sim |
+| `tests/Anonimizador.Tests` | Testes de unidade, vetores oficiais do FF1 e testes de propriedade; acessa partes internas via `InternalsVisibleTo`; roda em `net8.0` e `net10.0` | Não |
+| `benchmarks/Anonimizador.Benchmarks` | Medir o custo de FF1 e da varredura de JSON | Não |
 
 Um projeto de exemplos (`samples/`), consumindo apenas a API pública, fica para depois da v1.
 

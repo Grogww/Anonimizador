@@ -1,12 +1,12 @@
-# AnonimizadorDotNet
+# Anonimizador
 
-[![NuGet](https://img.shields.io/nuget/vpre/AnonimizadorDotNet.svg)](https://www.nuget.org/packages/AnonimizadorDotNet)
-[![CI](https://github.com/Grogww/AnonimizadorDotNet/actions/workflows/ci.yml/badge.svg)](https://github.com/Grogww/AnonimizadorDotNet/actions/workflows/ci.yml)
-[![Licença](https://img.shields.io/badge/licen%C3%A7a-Apache--2.0-blue.svg)](https://github.com/Grogww/AnonimizadorDotNet/blob/main/LICENSE)
+[![NuGet](https://img.shields.io/nuget/vpre/Anonimizador.svg)](https://www.nuget.org/packages/Anonimizador)
+[![CI](https://github.com/Grogww/Anonimizador/actions/workflows/ci.yml/badge.svg)](https://github.com/Grogww/Anonimizador/actions/workflows/ci.yml)
+[![Licença](https://img.shields.io/badge/licen%C3%A7a-Apache--2.0-blue.svg)](https://github.com/Grogww/Anonimizador/blob/main/LICENSE)
 ![.NET 8+](https://img.shields.io/badge/.NET-8%2B-512BD4.svg)
 
-Troca CPF, CNPJ, telefone, e-mail e nome por valores fictícios válidos e determinísticos, direto no
-`DbDataReader`, sem nenhuma chamada de rede. O mesmo CPF vira sempre o mesmo CPF fictício, em qualquer tabela,
+Anonimizador de dados pessoais brasileiros para .NET. Troca CPF, CNPJ, telefone, e-mail e nome por valores
+fictícios válidos e determinísticos, direto no `DbDataReader`, sem nenhuma chamada de rede. O mesmo CPF vira sempre o mesmo CPF fictício, em qualquer tabela,
 e os `JOIN`s continuam funcionando.
 
 > **Prerelease (`0.x`).** A API ainda pode mudar entre versões.
@@ -41,7 +41,7 @@ formato. A chave interna `IdCliente` passa intacta.
 ## Instalação
 
 ```bash
-dotnet add package AnonimizadorDotNet --prerelease
+dotnet add package Anonimizador --prerelease
 ```
 
 Requer .NET 8 ou superior.
@@ -49,7 +49,7 @@ Requer .NET 8 ou superior.
 ## Início rápido
 
 ```csharp
-using AnonimizadorDotNet;
+using Anonimizador;
 
 // Chave: Base64 de 32 bytes aleatórios (ex.: openssl rand -base64 32).
 using var anonymizer = new AnonymizerBuilder()
@@ -253,13 +253,13 @@ A biblioteca reduz riscos, mas não substitui uma avaliação jurídica sobre o 
 
 ## Documentação
 
-- [Escopo](https://github.com/Grogww/AnonimizadorDotNet/blob/main/docs/escopo.md): propósito, decisões e
+- [Escopo](https://github.com/Grogww/Anonimizador/blob/main/docs/escopo.md): propósito, decisões e
   funcionamento.
-- [Arquitetura](https://github.com/Grogww/AnonimizadorDotNet/blob/main/docs/arquitetura.md): organização da
+- [Arquitetura](https://github.com/Grogww/Anonimizador/blob/main/docs/arquitetura.md): organização da
   solução e das camadas.
-- [Backlog](https://github.com/Grogww/AnonimizadorDotNet/blob/main/docs/backlog.md): melhorias previstas
+- [Backlog](https://github.com/Grogww/Anonimizador/blob/main/docs/backlog.md): melhorias previstas
   depois da v1.
 
 ## Licença
 
-Distribuído sob a [Apache License 2.0](https://github.com/Grogww/AnonimizadorDotNet/blob/main/LICENSE).
+Distribuído sob a [Apache License 2.0](https://github.com/Grogww/Anonimizador/blob/main/LICENSE).

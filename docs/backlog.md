@@ -101,7 +101,7 @@ Notas da etapa 6; viram trabalho só se o script ou o MCP pedirem.
 - Integração com EF Core.
 - **Pacote MCP:** servidor MCP que abre a conexão, só permite leitura e entrega as linhas anonimizadas
   pelo `AnonymizingDataReader` da v1. Começa como projeto próprio do usuário, consumindo o pacote; vira
-  `AnonimizadorDotNet.Mcp` se fizer sentido publicar.
+  `Anonimizador.Mcp` se fizer sentido publicar.
 
 ## Privacidade
 
